@@ -1,0 +1,15 @@
+%空域滤波
+f=imread('building.tif');
+subplot(221);imshow(f);title('原图');
+h=fspecial('Sobel');
+g1=imfilter(f,h);
+subplot(223);imshow(g1);title('空域滤波');
+%频域滤波
+F=fft2(f,size(f,1),size(f,2));
+H=freqz2(h,size(f,1),size(f,2));
+G=F.*H;%点乘
+g2=ifft2(G);%傅里叶逆变换
+g3=real(g2);%取实部
+g4=abs(g3);%取绝对值
+g4=uint8(g4);%取8位无符号整形
+subplot(224);imshow(g4);title('频域滤波');
